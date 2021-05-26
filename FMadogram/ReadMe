@@ -7,4 +7,4 @@ Update :
 
 [x] Compute the variance of the gaussian process limit considering a FMadogram and independent copula (equal to 1/90).
 [ ] Generalize it with the lambda Madogram and independent copula
-[ ] Consider severous copula but tractable to compute
+[ ] Consider other copula which are tractable to compute
