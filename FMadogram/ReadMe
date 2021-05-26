@@ -9,5 +9,3 @@ Update :
 [ ] Generalize it with the lambda Madogram and independent copula
 [ ] Do the computation for the brownian bridge with missing data
 [ ] Consider other copula which are tractable to compute
-
-![normalite](/images/normalite.png)
