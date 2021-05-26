@@ -1,3 +1,9 @@
 Weak convergence of the FMadogram estimator in presence of missing data.
 
 Simulations to observe the behaviour of this estimator.
+
+Update :
+--------
+
+[x] Compute the variance of the gaussian process limit considering a FMadogram and independent copula
+[ ] Generalize it with the lambda Madogram and independent copula
