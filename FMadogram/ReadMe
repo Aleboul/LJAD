@@ -2,7 +2,7 @@ Weak convergence of the FMadogram estimator in presence of missing data.
 
 Simulations to observe the behaviour of this estimator.
 
-Update :
+Updates :
 --------
 
 [x] Compute the variance of the gaussian process limit considering a FMadogram and independent copula (equal to 1/90).
@@ -10,8 +10,13 @@ Update :
 [ ] Do the computation for the brownian bridge with missing data
 [ ] Consider other copula which are tractable to compute
 
+1 - Update 27 / 05 / 2021 10 : 32
+
 For the second bullet, the variance of the lambda Madogram take the closed form of :
 
 g(x) = ((x^2)*(1-x)^2 / (1+x*(1-x))^2)) * ( 1 / (1+2*x*(1-x) - (1-x) / (1 + x + 2*x*(1-x)) - x / (2 - x + 2*x*(1-x)))
 
 where x is between 0 and 1.
+
+Simulations have been added with lambda = 0.1, we plot the density as n (length of the sample) increase and added the density of the gaussian with
+parameters 0 and g(0.1).
