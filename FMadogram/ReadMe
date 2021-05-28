@@ -14,7 +14,7 @@ Updates :
 
 For the second bullet, the variance of the lambda Madogram take the closed form of :
 
-g(x) = ((x^2)*(1-x)^2 / (1+x*(1-x))^2)) * ( 1 / (1+2*x*(1-x) - (1-x) / (1 + x + 2*x*(1-x)) - x / (2 - x + 2*x*(1-x)))
+g(x) = ((x^2)*(1-x)^2 / (1+x*(1-x))^2)) * ( 1 / (1+2*x*(1-x)) - (1-x) / (1 + x + 2*x*(1-x)) - x / (2 - x + 2*x*(1-x)))
 
 where x is between 0 and 1.
 
