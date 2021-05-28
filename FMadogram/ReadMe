@@ -20,3 +20,7 @@ where x is between 0 and 1.
 
 Simulations have been added with lambda = 0.1, we plot the density as n (length of the sample) increase and added the density of the gaussian with
 parameters 0 and g(0.1).
+
+2 - Update 28 / 05 / 2021 9 : 22
+
+Modifying latex (typos) and add some lines to detail the structure of the variance of the limiting process.
