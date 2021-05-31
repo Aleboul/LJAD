@@ -7,7 +7,7 @@ Updates :
 
 [x] Compute the variance of the gaussian process limit considering a FMadogram and independent copula (equal to 1/90).
 [x] Generalize it with the lambda Madogram and independent copula
-[ ] Do the computation for the brownian bridge with missing data
+[x] Do the computation for the brownian bridge with missing data
 [ ] Consider other copula which are tractable to compute
 
 1 - Update 27 / 05 / 2021 10 : 32
@@ -24,3 +24,12 @@ parameters 0 and g(0.1).
 2 - Update 28 / 05 / 2021 9 : 22
 
 Modifying latex (typos) and add some lines to detail the structure of the variance of the limiting process.
+
+3 - Update 31 / 05 / 2021 17 : 26
+
+Computations were done with missing data. Theory seems to not follow the results obtained by simulation... (especially for small value of lambda)
+
+Notwithstanding, code was entirely reworked and a lot errors were handled. Theory was also reworked but no error was seen (i'm gonna write the proof clearly
+hence you might be able to point out some theoretical error).
+
+I'm starting the computations for extreme value copula, I can handle some computation easily but some might be harder.
