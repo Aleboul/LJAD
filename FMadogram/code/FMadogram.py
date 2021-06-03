@@ -98,7 +98,7 @@ def simu(target):
 		target : a list which contain the following parameters
 				- niter = number of replication
 				- simulation = law that generate the data
-				- probs_missing = array that indicate the probabilities of missing
+				- presence = array that indicate the probabilities of missing
 				- n_sample = array of multiple lengths of sample
 
 		Outputs
@@ -112,13 +112,13 @@ def simu(target):
 		probs = [] ; length = []
 		FMado_store = np.zeros(len(target['n_sample']))
 		obs_all = target['simulation'](mean, cov, np.max(target['n_sample']))
-		I = np.transpose([ np.random.binomial(1, 1-p, np.max(target['n_sample'])) for p in target['probs_missing'] ])
+		I = np.transpose([ np.random.binomial(1, p, np.max(target['n_sample'])) for p in target['presence'] ])
 		obs_all = np.concatenate([obs_all, I], axis = 1)
 		for i in range(0, len(target['n_sample'])):
 			obs = obs_all[:target['n_sample'][i]]
 			FMado, l = fmado(obs, target['lambda'])
 			FMado_store[i] = FMado[0,1] 
-			probs.append(target['probs_missing']) ; length.append(l)
+			probs.append(target['presence']) ; length.append(l)
 
 		output_cbind = np.c_[FMado_store, target['n_sample'], np.arange(len(target['n_sample'])),length,probs]
 		output.append(output_cbind)
@@ -135,26 +135,26 @@ def simu_proba(target):
 		target : a list which contain the following parameters
 				- niter = number of replication
 				- simulation = law that generate the data
-				- probs_missing = array that indicate the multiple probabilities of missing
+				- presence = array that indicate the multiple probabilities of missing
 				- n_sample = length of sample
 
 		Outputs
 		-------
-		Array containing niter * length(probs_missing) estimators of the FMadogram
+		Array containing niter * length(presence) estimators of the FMadogram
 	"""
 
 	output = []
 	for k in tqdm(range(target['niter'])):
 		probs = []
-		FMado_store = np.zeros(len(target['probs_missing']))
+		FMado_store = np.zeros(len(target['presence']))
 		obs_all = target['simulation'](mean, cov, np.max(target['n_sample']))
-		for i in range(0, len(target['probs_missing'])):
-			I = np.transpose([ np.random.binomial(1,1-p, np.max(target['n_sample'])) for p in target['probs_missing'][i] ])
+		for i in range(0, len(target['presence'])):
+			I = np.transpose([ np.random.binomial(1,p, np.max(target['n_sample'])) for p in target['presence'][i] ])
 			obs = np.concatenate([obs_all, I], axis = 1)
 			FMado = fmado(obs)
 			FMado_store[i] = FMado[0,1]
-			probs.append(target['probs_missing'][i])
-		output_cbind = np.c_[FMado_store, np.repeat(target['n_sample'], len(target['probs_missing'])),np.arange(len(target['probs_missing'])), probs]
+			probs.append(target['presence'][i])
+		output_cbind = np.c_[FMado_store, np.repeat(target['n_sample'], len(target['presence'])),np.arange(len(target['presence'])), probs]
 		output.append(output_cbind)
 
 	return output
@@ -166,7 +166,7 @@ target = {}
 
 target['niter'] = 100
 target['simulation'] = np.random.multivariate_normal
-target['probs_missing'] = [0.1,0.1]
+target['presence'] = [0.9,0.9]
 n_sample = [100,250,500,1000,10000]
 
 mean = [0,0]
@@ -174,7 +174,7 @@ cov = [[1,0],[0,1]]
 
 lmbds = np.linspace(0,1,50)
 x = np.linspace(0, 1, 50)
-values = var_mado_missing(x,(1- target['probs_missing'][0])*(1- target['probs_missing'][1]), 1-target['probs_missing'][0], 1-target['probs_missing'][1])  
+values = var_mado_missing(x,(1- target['presence'][0])*(1- target['presence'][1]), 1-target['presence'][0], 1-target['presence'][1])  
 
 fig, ax = plt.subplots(2,3, sharey = True)
 ax = ax.ravel()
