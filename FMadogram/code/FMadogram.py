@@ -1,3 +1,10 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use('seaborn')
+from matplotlib import cm
+from tqdm import tqdm
+
 def ecdf(data, missing):
 	""" Compute ECDF  with missing data 
 		
@@ -15,7 +22,7 @@ def ecdf(data, missing):
 	for i in index:
 		ecdf[i] = (1.0 / np.sum(missing)) * np.sum((data <= data[i]) * missing) # compute ecdf
 		
-        
+
 	return ecdf
 	
 def dist(X, lmbd, missing):
@@ -34,22 +41,23 @@ def dist(X, lmbd, missing):
 	"""
 	ncols = X.shape[1]
 	nrows = X.shape[0]
-	X = np.multiply(X, missing)
+	col_index = np.where(missing == 1)
+	X = X [:, col_index]
 	dist = np.zeros([nrows, nrows])
 	for i in range(0,nrows):
 		for j in range(0,i):
 			if i == j:
 				dist[i,i] = 0
 			else :
-				F_x = X[i,:]
-				G_y = X[j,:]
-				d = np.linalg.norm(np.power(F_x,lmbd)-np.power(G_y,1-lmbd), ord = 1)
+				F_x = np.squeeze(X[j,:])
+				G_y = np.squeeze(X[i,:])
+				d = np.linalg.norm(np.power(F_x,lmbd) - np.power(G_y,1-lmbd), ord = 1) - (lmbd) * np.sum(1-np.power(F_x,lmbd)) - (1-lmbd) * np.sum(1 - np.power(G_y, 1 - lmbd))
 				dist[i,j] = d
 				dist[j,i] = d
 				
 	return dist
 	
-def fmado(x, lmbd=0.5):
+def fmado(x, lmbd):
 	"""
 		This function
 		
@@ -60,10 +68,10 @@ def fmado(x, lmbd=0.5):
 
 		Outputs
 		-------
-		A matrix equals to 0 if i = j and equalts to |F(X)^{\lambda} - G(Y)^{1-\lambda}|
+		A matrix equals to 0 if i = j and equals to |F(X)^{\lambda} - G(Y)^{1-\lambda}|
 	"""
 	
-	Nnb = x.shape[1] // 2
+	Nnb = x.shape[1] // 2 
 	Tnb = x.shape[0]
 	
 	#--- Distance Matrix
@@ -73,12 +81,12 @@ def fmado(x, lmbd=0.5):
 		x_vec = np.array(x[:,p]) # x
 		miss = np.array(x[:, Nnb + p])
 		Femp = ecdf(x_vec, miss)
-		V[:,p] = Femp
+		V[:,p] = Femp 
 	# With Madogram
-	cross_missing = np.array([np.multiply(x[:,Nnb], x[:,Nnb +p]) for p in range(1, Nnb)])
-	Fmado = dist(np.transpose(V),lmbd = 0.5, missing = cross_missing) / (2 * np.sum(cross_missing))
+	cross_missing = np.squeeze(np.multiply(x[:,Nnb], x[:, Nnb + 1]))
+	Fmado = dist(np.transpose(V),lmbd = lmbd, missing = cross_missing) / (2 * np.sum(cross_missing)) + (1/2) * ((1 - lmbd*(1-lmbd))/ ((2-lmbd)*(1+lmbd)))
 	
-	return Fmado
+	return Fmado , np.sum(cross_missing)
 
 def simu(target):
 	"""
@@ -100,19 +108,19 @@ def simu(target):
 	"""
 	output = []
 
-	for k in tqdm(range(target['niter'])):
-		probs = []
+	for k in range(target['niter']):
+		probs = [] ; length = []
 		FMado_store = np.zeros(len(target['n_sample']))
 		obs_all = target['simulation'](mean, cov, np.max(target['n_sample']))
 		I = np.transpose([ np.random.binomial(1, 1-p, np.max(target['n_sample'])) for p in target['probs_missing'] ])
 		obs_all = np.concatenate([obs_all, I], axis = 1)
 		for i in range(0, len(target['n_sample'])):
 			obs = obs_all[:target['n_sample'][i]]
-			FMado = fmado(obs)
-			FMado_store[i] = FMado[0,1]
-			probs.append(target['probs_missing'])
+			FMado, l = fmado(obs, target['lambda'])
+			FMado_store[i] = FMado[0,1] 
+			probs.append(target['probs_missing']) ; length.append(l)
 
-		output_cbind = np.c_[FMado_store, target['n_sample'], np.arange(len(target['n_sample'])), probs]
+		output_cbind = np.c_[FMado_store, target['n_sample'], np.arange(len(target['n_sample'])),length,probs]
 		output.append(output_cbind)
 
 	return output
@@ -150,3 +158,38 @@ def simu_proba(target):
 		output.append(output_cbind)
 
 	return output
+
+def var_mado_missing(x, p_xy, p_x, p_y):
+	value = ((x ** 2 * (1-x)**2) / (1+x*(1-x))**2) * ( (p_xy**-1) / (1+2*x*(1-x)) - (p_x**-1)* (1-x) / (1+x+2*x*(1-x)) - (p_y**-1)*x / (2-x+2*x*(1-x)))
+	return value
+target = {}
+
+target['niter'] = 100
+target['simulation'] = np.random.multivariate_normal
+target['probs_missing'] = [0.1,0.1]
+n_sample = [100,250,500,1000,10000]
+
+mean = [0,0]
+cov = [[1,0],[0,1]]
+
+lmbds = np.linspace(0,1,50)
+x = np.linspace(0, 1, 50)
+values = var_mado_missing(x,(1- target['probs_missing'][0])*(1- target['probs_missing'][1]), 1-target['probs_missing'][0], 1-target['probs_missing'][1])  
+
+fig, ax = plt.subplots(2,3, sharey = True)
+ax = ax.ravel()
+for i,n in enumerate(n_sample):
+  target['n_sample'] = [n]
+  var_lambda = []
+  for lmbd in tqdm(lmbds):
+    target['lambda'] = lmbd
+    output = simu(target)
+    df_FMado = pd.DataFrame(np.concatenate(output))
+    df_FMado.columns = ['FMado', 'n', 'length','gp', 'prob_X', 'prob_Y']
+    df_FMado['FMado_scaled'] = (df_FMado.FMado - df_FMado.groupby('n')['FMado'].transform('mean')) * np.sqrt(df_FMado.n)
+    output = df_FMado['FMado_scaled'].var()
+    var_lambda.append(output)
+  ax[i].plot(x, values, '--')
+  ax[i].plot(lmbds, var_lambda, '.', markersize = 5, alpha = 0.5, color = 'salmon')
+
+plt.savefig("/home/aboulin/Documents/stage/naveau_2009/output_2.png")
