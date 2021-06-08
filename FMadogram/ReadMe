@@ -39,3 +39,8 @@ I'm starting the computations for extreme value copula, I can handle some comput
 Add lemma in order to prove the functional integral that should satisfies each bounded measurable function with respect to a bounded variation function of the type
 |x^\lambda - y^{1-\lambda}|.
 We can prove, using the same tools, that the normalized estimator proposed in Naveau 2009 does not modify the variance of the limiting gaussian process.
+
+5 - Update 08 / 08 / 2021 16 : 16
+
+Code is now written in R. The same problem persist with n range from 2 to 1024. (see outputvar_lambda.pnh and outputvar_lambda_miss.png)
+It works well without missing data but does not fit with missing data, as in python.
