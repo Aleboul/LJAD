@@ -68,7 +68,14 @@ var_FMado = function(x, p_xy, p_x, p_y){
 }
 
 simu = function(target){
+	# Heuristiquement,
+	# La fonction, à chaque itération (donné par foreach) va calculer un lambda-FMadogram à partir des données simulées
+	# pour n = 128, 256, 512, 1024, 2048, 4096. Une fois cela fait, elle sauvegarde le résultat dans une matrice output.
+	# On réitère M fois l'expérience et la fonction foreach permet d'ajouter (par lignes) les résultats dans la matrice output via 
+	# le paramètre .combine = rbind. A chaque étape, la matrice output se voit ajouter 6 lignes (i.e le nombre de taille d'échantillon).
 	foreach(rep = 1:M, .combine = rbind) %dorng% {
+		# foreach is a function that create a loop and we, at each iteration, we increment the matrix of results (here output)
+		# using rbind.
 		# Allocate space for output
 
 		FMado_store = matrix(0, length(n))
