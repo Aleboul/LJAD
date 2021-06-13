@@ -8,7 +8,7 @@ Updates :
 [x] Compute the variance of the gaussian process limit considering a FMadogram and independent copula (equal to 1/90).
 [x] Generalize it with the lambda Madogram and independent copula
 [x] Do the computation for the brownian bridge with missing data
-[ ] Consider other copula which are tractable to compute
+[x] Consider other copula which are tractable to compute
 
 1 - Update 27 / 05 / 2021 10 : 32
 
@@ -48,3 +48,11 @@ It works well without missing data but does not fit with missing data, as in pyt
 5 - Update 08 / 08 / 2021 16 : 42
 
 Add some elements to compute covariance of the limiting process of Segers (2014).
+
+6 - Update 06 / 06 / 2021 17:00 
+
+Add a proof to show that my results were false on the convergence of the lambda FMadogram estimated
+with missing data to a gaussian law with a certain variance (i'm still not sure about that). We can
+see that remark 4 in Derumigny and Fermanian conditional empirical copula process (2020).
+
+Compute a lower and an upper bound to the hard integral (12) the pdf.
