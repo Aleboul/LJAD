@@ -49,7 +49,7 @@ It works well without missing data but does not fit with missing data, as in pyt
 
 Add some elements to compute covariance of the limiting process of Segers (2014).
 
-6 - Update 06 / 06 / 2021 17:00 
+6 - Update 11 / 06 / 2021 17:00 
 
 Add a proof to show that my results were false on the convergence of the lambda FMadogram estimated
 with missing data to a gaussian law with a certain variance (i'm still not sure about that). We can
