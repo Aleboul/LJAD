@@ -56,3 +56,10 @@ with missing data to a gaussian law with a certain variance (i'm still not sure 
 see that remark 4 in Derumigny and Fermanian conditional empirical copula process (2020).
 
 Compute a lower and an upper bound to the hard integral (12) the pdf.
+
+7 - Update 14 / 06 / 2021 18 : 20
+
+Add constant for variance of the lambda FMadogram when we consider an extreme value copula. I have bounded below the covariance (see the remark on the pdf).
+I wasn't able to find an upper bound more beautiful. The constant are not really stylish, nevertheless, we (maybe) make them more beautiful at the cost of losing
+precision.
+Indeed, all the results are true until I found a mistake.
