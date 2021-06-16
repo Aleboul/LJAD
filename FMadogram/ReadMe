@@ -63,3 +63,16 @@ Add constant for variance of the lambda FMadogram when we consider an extreme va
 I wasn't able to find an upper bound more beautiful. The constant are not really stylish, nevertheless, we (maybe) make them more beautiful at the cost of losing
 precision.
 Indeed, all the results are true until I found a mistake.
+
+8 - Update 16 / 06 / 2021 18 : 51
+
+Computations for the lower and upper bound are done with a extreme value copula (see pdf). I have drawn the two curve with respect
+to lambda (see images variance_gumbell_0.15 and variance_galambos_copula_0.005). I have to estimate the lambda-FMadogram with simulated
+data now. Then, enhance the writing of the tex file.
+
+PS : The negative variance (=0 bc I took the max between the lower bound and 0) may come from an error in algebra. But I've checked may times
+and I don't see any. Same for code.
+
+PS2 : The upper bound cannot be equal to the variance of lambda-FMadogram when we took A(t) = 1 due to the positive sign of the covariance
+between the brownian bridges and their partial derivative. In this contex, I can upper bound the covariance with the covariance
+computed with the comonotonic copula and not the indepent (which is greater than 0).
