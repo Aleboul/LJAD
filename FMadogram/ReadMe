@@ -76,3 +76,8 @@ and I don't see any. Same for code.
 PS2 : The upper bound cannot be equal to the variance of lambda-FMadogram when we took A(t) = 1 due to the positive sign of the covariance
 between the brownian bridges and their partial derivative. In this contex, I can upper bound the covariance with the covariance
 computed with the comonotonic copula and not the indepent (which is greater than 0).
+
+9 - Update 17 / 06 / 2021 11:42
+
+Big errors where found while computing the bounds of the covariance (I won't tell which ones because it is too shameful). They were fixed, and the bound are
+more coherent now.
