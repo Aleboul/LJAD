@@ -1,6 +1,6 @@
 import numpy as np
 from enum import Enum
-from scipy import optimize
+from scipy.optimize import minimize_scalar
 class CopulaTypes(Enum):
     """ Available copula families. """
 
@@ -86,7 +86,7 @@ class Gumbel(Bivariate):
             -------
             real number
         """
-        value_ = np.power((-np.log(t)),1/self.theta)
+        value_ = np.power((-np.log(t)),self.theta)
         return(value_)
     
     def K_c(self, t):
@@ -102,12 +102,13 @@ class Gumbel(Bivariate):
         for i in range(0,self.n_sample):
             v = X[i]
             def func(x):
-                value_ = self.K_c(x) - v[1]
+                value_ = np.abs(self.K_c(x) - v[1])
                 return(value_)
-            sol = float(optimize.root(func, 0.5).x)
-            u = [np.exp(np.power(v[0],1/self.theta)*np.log(sol)) , np.exp(np.power(1-v[1],1/self.theta)*np.log(sol))]
+            sol = minimize_scalar(func, bounds = (0,1), method = "bounded")
+            sol = float(sol.x)
+            u = [np.exp(np.power(v[0],1/self.theta)*np.log(sol)) , np.exp(np.power(1-v[0],1/self.theta)*np.log(sol))]
             output[i,:] = u
         return output
 
-copula = Gumbel(copula_type= "GUMBEL", random_seed= 42, theta=2, n_sample = 100)
-print(copula.sample())
+copula = Gumbel(copula_type= "GUMBEL", random_seed= 42, theta=2, n_sample = 1)
+copula.sample()
