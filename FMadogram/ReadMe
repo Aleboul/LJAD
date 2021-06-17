@@ -9,6 +9,7 @@ Updates :
 [x] Generalize it with the lambda Madogram and independent copula
 [x] Do the computation for the brownian bridge with missing data
 [x] Consider other copula which are tractable to compute
+[ ] Make simulations for extreme value copulas
 
 1 - Update 27 / 05 / 2021 10 : 32
 
