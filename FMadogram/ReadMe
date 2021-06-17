@@ -82,3 +82,7 @@ computed with the comonotonic copula and not the indepent (which is greater than
 
 Big errors where found while computing the bounds of the covariance (I won't tell which ones because it is too shameful). They were fixed, and the bounds are
 more coherent now.
+
+10 - Update 17 / 06 / 2021 18:12
+
+Add a code from scratch to simulate a gaussian copula.
