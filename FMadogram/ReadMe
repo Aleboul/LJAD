@@ -79,5 +79,5 @@ computed with the comonotonic copula and not the indepent (which is greater than
 
 9 - Update 17 / 06 / 2021 11:42
 
-Big errors where found while computing the bounds of the covariance (I won't tell which ones because it is too shameful). They were fixed, and the bound are
+Big errors where found while computing the bounds of the covariance (I won't tell which ones because it is too shameful). They were fixed, and the bounds are
 more coherent now.
