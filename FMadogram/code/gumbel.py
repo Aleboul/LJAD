@@ -1,6 +1,7 @@
 import numpy as np
 from enum import Enum
 from scipy.optimize import minimize_scalar
+from scipy.stats import norm
 class CopulaTypes(Enum):
     """ Available copula families. """
 
@@ -51,8 +52,97 @@ class Bivariate(object):
 
 class Gumbel(Bivariate):
 
-    theta_interval = [0,1]
+    copula_type = CopulaTypes.GUMBEL
+    theta_interval = [1,float('inf')]
     invalid_thetas = []
+
+    def A(self, t):
+        value_ = np.power(np.power(t, self.theta) + np.power(1-t, self.theta), 1/self.theta)
+        return(value_)
+
+    def Aprime(self, t):
+        value_1 = self.theta * np.power(t, self.theta -1) - self.theta*np.power(1-t, self.theta-1)
+        value_2 = np.power(t, self.theta) + np.power(1-t, self.theta)
+        value_ = (1/self.theta)*value_1*np.power(value_2, (1/self.theta)-1)
+        return value_
+
+    def kappa(self, lmbd):
+        value_ = self.A(lmbd) - lmbd*self.Aprime(lmbd)
+        return(value_)
+
+    def zeta(self, lmbd):
+        value_ = self.A(lmbd) + (1-lmbd)*self.Aprime(lmbd)
+        return(value_)
+
+    def f(self, lmbd):
+        value_ = np.power(lmbd*(1-lmbd)/(self.A(lmbd) + lmbd*(1-lmbd)),2)
+        return(value_)
+
+    def f1(self, lmbd, h, x):
+        value_1 = x * np.power(1-x,3) * h(lmbd)
+        value_2 = (self.A(lmbd) + lmbd*(1-lmbd))*(self.A(lmbd) + (1-x))
+        value_ = value_1 / value_2
+        return(value_)
+
+    def f2(self, lmbd, h, x):
+        value_1 = x*(1-x)*h(lmbd)
+        value_2 = self.A(lmbd) - (1-x) + lmbd*(1-lmbd)
+        value_3 = x*(1-x) / (self.A(lmbd) + x - (1-x) + 2*lmbd*(1-lmbd))
+        value_4 = np.power(1-x,2) / (self.A(lmbd) + (1-x))
+        value_  = (value_1 / value_2) * (value_3 - value_4)
+        return(value_)
+
+    def f_kappa(self,lmbd):
+        if lmbd > 0.5 :
+            value_ = self.f1(lmbd, self.kappa, lmbd) + self.f2(lmbd, self.kappa, lmbd)
+            return(value_)
+        else:
+            value_1 = self.kappa(lmbd) * np.power(lmbd*(1-lmbd), 2)
+            value_2 = (self.A(lmbd) + lmbd*(1-lmbd))*(self.A(lmbd) + 2*lmbd*(1-lmbd))
+            value_ = value_1 / value_2
+            return(value_)
+
+    def f_zeta(self, lmbd):
+        if lmbd > 0.5 :
+            value_1 = self.zeta(lmbd) * np.power(lmbd*(1-lmbd),2)
+            value_2 = (self.A(lmbd) + lmbd*(1-lmbd))*(self.A(lmbd) + 2*lmbd*(1-lmbd))
+            value_ = value_1 / value_2
+            return(value_)
+        else :
+            value_ = self.f1(lmbd, self.zeta, 1-lmbd) + self.f2(lmbd, self.zeta, 1-lmbd)
+            return(value_)
+
+    def common(self, lmbd):
+        value_1 = 1 / (self.A(lmbd) + 2*lmbd*(1-lmbd))
+        value_2 = np.power(self.kappa(lmbd),2) * (1-lmbd) / (2*self.A(lmbd) - (1-lmbd) + 2*lmbd*(1-lmbd))
+        value_3 = np.power(self.zeta(lmbd),2) * lmbd / (2*self.A(lmbd) - lmbd + 2*lmbd*(1-lmbd))
+        return self.f(lmbd)* (value_1 + value_2 + value_3)
+
+    def lower(self, lmbd):
+        ### second term
+        value_1 = (np.power(1-lmbd,2) - self.A(lmbd)) / (2*self.A(lmbd) - (1-lmbd) + 2*lmbd*(1-lmbd))
+        value_1 = 2*self.kappa(lmbd) * self.f(lmbd) * (value_1) + 2*self.f_kappa(lmbd)
+        ### third term
+        value_2 = (np.power(lmbd,2) - self.A(lmbd)) / (2*self.A(lmbd) - lmbd + 2*lmbd*(1-lmbd))
+        value_2 = 2*self.zeta(lmbd) * self.f(lmbd) * value_2 + 2 *self.f_zeta(lmbd)
+        ### result
+        value_ = self.common(lmbd) - value_1 - value_2
+        return(value_)
+
+    def upper(self, lmbd):
+        ### second term
+        value_1 = (1-lmbd) / (2*self.A(lmbd) - (1-lmbd) + 2 * lmbd*(1-lmbd)) + (self.A(lmbd) - lmbd) / (self.A(lmbd) + lmbd + 2*lmbd*(1-lmbd))
+        value_1 = self.kappa(lmbd) * self.f(lmbd) * value_1
+        ### third term
+        value_2 = lmbd / (2*self.A(lmbd) - lmbd + 2*lmbd*(1-lmbd)) + (self.A(lmbd) - (1-lmbd)) / (self.A(lmbd) + 1 - lmbd + 2*lmbd*(1-lmbd))
+        value_2 = self.zeta(lmbd) * self.f(lmbd) * value_2
+        ### fourth term
+        value_3 = (self.zeta(lmbd) * self.kappa(lmbd) * lmbd*(1-lmbd)) / self.A(lmbd)
+        value_3 = 2 * self.f(lmbd) * value_3
+        ### result
+        value_ = self.common(lmbd) - value_1 - value_2  + value_3
+        return(value_)
+        
 
     def generate_randomness(self):
         """
@@ -96,7 +186,7 @@ class Gumbel(Bivariate):
         value_ = t*(1-(np.log(t)/self.theta))
         return value_
 
-    def sample(self):
+    def sample_unimargin(self):
         output = np.zeros((self.n_sample,2))
         X = self.generate_randomness()
         for i in range(0,self.n_sample):
@@ -110,5 +200,20 @@ class Gumbel(Bivariate):
             output[i,:] = u
         return output
 
-copula = Gumbel(copula_type= "GUMBEL", random_seed= 42, theta=2, n_sample = 1)
-copula.sample()
+    def sample(self):
+        intput = self.sample_unimargin()
+        output = np.zeros((self.n_sample,2))
+        ncol = intput.shape[1]
+        for i in range(0, ncol):
+            output[:,i] = norm.ppf(intput[:,i])
+
+        return (output)
+
+        
+
+
+#copula = Gumbel(copula_type= "GUMBEL", random_seed= 42, theta=2, n_sample = 1)
+#x = np.linspace(0,1.0,5)
+#print(x)
+#values = [copula.f2(lmb, copula.zeta, 1-lmb) for lmb in x]
+#print(values)
