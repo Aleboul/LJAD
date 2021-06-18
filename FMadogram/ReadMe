@@ -94,3 +94,12 @@ Write the Monte Carlo simulation in a object oriented file in python.
 12 - Update 18 / 06 / 2021 9:14
 
 Typos were fixed on the derivative of the extreme value copula, the value of zeta is now modified.
+
+13 - Update 18 / 06 / 2021 18:28
+
+Added the code extreme_value_copula.py allows to do simulation with data with some dependencie (I have used 
+the Gumbel Copula). Again, the results that I have does not support the theory (see extreme_value_copula.png in image file).
+The problem : red curve is the lower bound (sometime negative), blue curve is independance variance, green curve is the upper bound
+In salmon, our empirical variance. Sometimes the empirical variance are lower than the red dotted bound (unexpected)...
+I'm checking the theory right now.
+Then, the code.
