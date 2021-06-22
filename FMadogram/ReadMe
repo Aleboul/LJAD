@@ -103,3 +103,9 @@ The problem : red curve is the lower bound (sometime negative), blue curve is in
 In salmon, our empirical variance. Sometimes the empirical variance are lower than the red dotted bound (unexpected)...
 I'm checking the theory right now.
 Then, the code.
+
+14 - Update 22 / 06 / 2021 20 : 08
+
+The pdf file was completely modified.
+Add extreme_value_copula.R to simulate gumbel copula and estimate from these samples lambda Madogram.
+
