@@ -109,3 +109,6 @@ Then, the code.
 The pdf file was completely modified.
 Add extreme_value_copula.R to simulate gumbel copula and estimate from these samples lambda Madogram.
 
+15 - Update 23 / 06 / 2021 18 : 50
+
+Add discussion on the value of Kappa and Zeta.
