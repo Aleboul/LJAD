@@ -119,3 +119,4 @@ The code was checked. I have tried many Pickhands dependence function (Asymetric
 the theory doesn't hold with simulation. 
 I read back the theory mainly the proof of Lemma A.3. I have added some elements of argumentation (I have mainly use condition 3 (ii)
 and also some properties of lebesgue integral.)
+Nevertheless, I haven't find a mistake in there. All the difficult cases were tractable using our condition and properties of our object.
