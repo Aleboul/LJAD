@@ -5,11 +5,12 @@ Simulations to observe the behaviour of this estimator.
 Updates :
 --------
 
-[x] Compute the variance of the gaussian process limit considering a FMadogram and independent copula (equal to 1/90).
-[x] Generalize it with the lambda Madogram and independent copula
+[o] Compute the variance of the gaussian process limit considering a FMadogram and independent copula (equal to 1/90).
+[o] Generalize it with the lambda Madogram and independent copula
 [x] Do the computation for the brownian bridge with missing data
-[x] Consider other copula which are tractable to compute
-[ ] Make simulations for extreme value copulas
+[o] Consider other copula which are tractable to compute
+[x] Make simulations for extreme value copulas
+[ ] Find some condition under Pickhands dependence function such that the condition (iii) is verified.
 
 1 - Update 27 / 05 / 2021 10 : 32
 
