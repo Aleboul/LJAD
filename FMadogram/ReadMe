@@ -112,3 +112,10 @@ Add extreme_value_copula.R to simulate gumbel copula and estimate from these sam
 15 - Update 23 / 06 / 2021 18 : 50
 
 Add discussion on the value of Kappa and Zeta.
+
+16 - Update 24 / 06 /2021 11 : 17
+
+The code was checked. I have tried many Pickhands dependence function (Asymetric inverse negative logistic copula, T-Student copula). But 
+the theory doesn't hold with simulation. 
+I read back the theory mainly the proof of Lemma A.3. I have added some elements of argumentation (I have mainly use condition 3 (ii)
+and also some properties of lebesgue integral.)
