@@ -167,7 +167,7 @@ def integrand_half_cv122(x,y,lmbd, theta):
     v2 = math.pow(y,1/(1-lmbd))
     value_1 = min(v1,u2) * C_1(v1,v2,lmbd,theta)
     value_2 = C(u1,u2,lmbd,theta)*v1 * C_1(v1,v2,lmbd,theta)
-    return(value_1-value_2)
+    return(value_1 - value_2)
 
 def bounds_y_cv122():
     return [0.0,1]
@@ -193,38 +193,19 @@ def integrand_half_cv132(x,y,lmbd, theta):
     value_2 = C(u1,u2,lmbd,theta)*v2 * C_2(v1,v2,lmbd,theta)
     return(value_1-value_2)
 
-def integrand_half_cv131(x,y,lmbd, theta):
-    u1 = math.pow(x,1/lmbd)
-    u2 = math.pow(x,1/(1-lmbd))
-    v1 = math.pow(y,1/(lmbd))
-    v2 = math.pow(y,1/(1-lmbd))
-
-
 def var_FMado(lmbd, theta):
     v1 = dblquad(lambda x,y : integrand_v1(x,y, lmbd, theta), 0,1.0, 0, 1.0)[0]
     v2 = dblquad(lambda x,y : integrand_v2(x,y, lmbd, theta), 0,1.0, 0, 1.0)[0]
     v3 = dblquad(lambda x,y : integrand_v3(x,y, lmbd, theta), 0,1.0, 0, 1.0)[0]
     cv12 = integrate.nquad(lambda x,y : integrand_half_cv122(x,y, lmbd, theta),[bounds_x_cv122, bounds_y_cv122])[0] + integrate.nquad(lambda x,y : integrand_half_cv121(x,y, lmbd, theta),[bounds_x_cv121, bounds_y_cv121])[0]
-    cv13 = integrate.nquad(lambda x,y : integrand_half_cv122(x,y, lmbd, theta),[bounds_x_cv122, bounds_y_cv122])[0] + integrate.nquad(lambda x,y : integrand_half_cv121(x,y, lmbd, theta),[bounds_x_cv121, bounds_y_cv121])[0]
-
+    cv13 = integrate.nquad(lambda x,y : integrand_half_cv132(x,y, lmbd, theta),[bounds_x_cv122, bounds_y_cv122])[0] + integrate.nquad(lambda x,y : integrand_half_cv131(x,y, lmbd, theta),[bounds_x_cv121, bounds_y_cv121])[0]
+    print(v3)
     return(v1 + v2 + v3 - 2*cv12 - 2*cv13)
 
-theta = 1
-lmbd = 0.1
+theta = 5
+lmbd = 0.2
 
-n = 100
-
-x = np.linspace(0.1,0.9)
-value = []
-for lmbd in x:
-    value_ = var_FMado(lmbd,theta)
-    value.append(value_)
-
-print(x)
-print(value)
-fig, ax = plt.subplots()
-ax.plot(x, value, '--', color = 'darkblue')
-plt.savefig("/home/aboulin/Documents/stage/naveau_2009/output/image_2.png")
+print(var_FMado(lmbd, theta))
 
 #n = 50
 #n_iter = 1000
