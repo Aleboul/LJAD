@@ -131,3 +131,8 @@ to the point (0,0), is that matter?)
 18 - Update 25 / 06 / 2021 8 : 19
 
 Fix some typos on the pdf.
+
+19 - Update 25 / 06 / 2021 18 : 55
+
+I found a typos on code when I was computing numerically the integral.
+All works but the lower variance still negative
