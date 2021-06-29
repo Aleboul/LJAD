@@ -137,3 +137,8 @@ Fix some typos on the pdf.
 I found a typos on code when I was computing numerically the integral.
 All works but the lower variance still negative.
 I was able to compute numerically the true variance. Maybe we can be use of that.
+
+20 - Update 29 / 06 / 2021 17 : 02
+
+Compute some variance with general copula (see images).
+Add an introduction in pdf file
