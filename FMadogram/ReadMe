@@ -9,7 +9,7 @@ Updates :
 [o] Generalize it with the lambda Madogram and independent copula
 [x] Do the computation for the brownian bridge with missing data
 [o] Consider other copula which are tractable to compute
-[x] Make simulations for extreme value copulas
+[o] Make simulations for extreme value copulas
 [ ] Find some condition under Pickhands dependence function such that the condition (iii) is verified.
 [o] Compute exactly (numerically) the integral the EVC.
 
