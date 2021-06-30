@@ -142,3 +142,9 @@ I was able to compute numerically the true variance. Maybe we can be use of that
 
 Compute some variance with general copula (see images).
 Add an introduction in pdf file
+
+21 - Update 30 / 06 / 2021 12 : 05
+
+Add extreme value copulas on module var_FMado (some bugs still remains but are well identified).
+Some suggestions has been implemented on the pdf file.
+The simulation section must be improved. I have the ideas but need some time to implement them correctly!
