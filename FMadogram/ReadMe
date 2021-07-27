@@ -10,7 +10,7 @@ Updates :
 [x] Do the computation for the brownian bridge with missing data
 [o] Consider other copula which are tractable to compute
 [o] Make simulations for extreme value copulas
-[ ] Find some condition under Pickhands dependence function such that the condition (iii) is verified.
+[o] Find some condition under Pickhands dependence function such that the condition (iii) is verified.
 [o] Compute exactly (numerically) the integral the EVC.
 
 1 - Update 27 / 05 / 2021 10 : 32
