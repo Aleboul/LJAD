@@ -160,3 +160,11 @@ Add Simulations, Add Evc
 
 Add a counter example to show that there is, in general, no monotonocity of the variance with respect to the dependence positive.
 Add a figure to illustrate that point too.
+
+24 - Update 29 / 07 / 2021 10 : 16
+
+Beacoups de modification ont eu lieu mais je ne les ai pas notifiées ici.
+
+- Remove assumption A(iii)
+- Weak convergence of the lambda-FMadogram as a process
+etc....
