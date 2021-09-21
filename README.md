@@ -5,3 +5,6 @@ L'objectif de ces travaux nous permettra d'analyser les liens de dépendances en
 Par exemple les feux de forêts, les précipitations, les écarts de températures à la normale, des séries financières.
 
 ![alt text](https://github.com/Aleboul/LJAD/blob/main/maps.png)
+
+
+![alt text](https://github.com/Aleboul/LJAD/blob/main/maps_2.png)
